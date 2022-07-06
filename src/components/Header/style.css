@@ -18,3 +18,6 @@ header .menu button {
     padding: 10px;
 }
 
+header span#atualUserName {
+    font-weight: bold;
+}

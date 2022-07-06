@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import user from '../../public/scripts/user'
 
 import Header from '../../components/Header'
 import Separator from '../../components/Separator'
@@ -13,13 +14,26 @@ export default function Home() {
     const APIUrl = "http://localhost:8080/api/notes"
 
 
-    const [notes, setNotes] = useState({ "content": {}})
+    const [notes, setNotes] = useState({ "notes": [] })
 
     useEffect(()=>{
         axios.get(APIUrl)
-            .then(response => console.log("conectado"))
+            .then(response => response.data)
+            .then(data => {
+                setNotes({
+                    "notes": data.data
+                })
+            })
             .catch(error => console.error("Erro -> " + error))
-    })
+    }, [])
+
+    function isAuthor(noteAuthor) {
+        if(noteAuthor === user.name) {
+            return true
+        } else {
+            return false
+        }
+    }
 
     return (
         <>
@@ -27,23 +41,20 @@ export default function Home() {
             <section>
                 <Separator title="Suas notas"/>
                 <div className="notes_container">
-                    <SmallCard title="Titulo da nota 1" author="Autor da nota 1" id="1"/>
-                    <SmallCard title="Titulo da nota 2" author="Autor da nota 2" id="2"/>
-                    <SmallCard title="Titulo da nota 3" author="Autor da nota 3" id="3"/>
-                    <SmallCard title="Titulo da nota 4" author="Autor da  l sdfna sdf,m alsn dfamsnd f,amsnd fa,msnd fa,msdn fa,nota 4" id="4"/>
-                    <SmallCard title="Titulo da nota 5" author="Autor da nota 5" id="5"/>
-                    <SmallCard title="Titulo da nota 6" author="Autor da nota 6" id="6"/>
-                    <SmallCard title="Titulo da nota 7" author="Autor da nota 7" id="7"/>
+                    {
+                        notes.notes.map((note)=>{
+                            return (
+                                <SmallCard  
+                                title= {note.title}
+                                author= {note.author}
+                                id= {note.id}
+                            />)
+                        })
+                    }
                 </div>
                 <Separator title="Outras notas"/>
                 <div className="notes_container">
                     <SmallCard title="Titulo da nota 1" author="Autor da nota 1" id="1"/>
-                    <SmallCard title="Titulo da nota 2" author="Autor da nota 2" id="2"/>
-                    <SmallCard title="Titulo da nota 3" author="Autor da nota 3" id="3"/>
-                    <SmallCard title="Titulo da nota 4" author="Autor da  l sdfna sdf,m alsn dfamsnd f,amsnd fa,msnd fa,msdn fa,nota 4" id="4"/>
-                    <SmallCard title="Titulo da nota 5" author="Autor da nota 5" id="5"/>
-                    <SmallCard title="Titulo da nota 6" author="Autor da nota 6" id="6"/>
-                    <SmallCard title="Titulo da nota 7" author="Autor da nota 7" id="7"/>
                 </div>
             </section>
             <Footer />
