@@ -10,22 +10,12 @@ import Footer from '../../components/Footer'
 import './style.css'
 
 export default function Home() {
-    // const APIUrl = "https://notepad-app-api.vercel.app/api/notes"
-    const APIUrl = "http://localhost:8080/api/notes"
+    const APIUrl = "https://notepad-app-api.vercel.app/api/notes"
+    // const APIUrl = "http://localhost:8080/api/notes"
 
 
     const [notes, setNotes] = useState({ "notes": [] })
-
-    useEffect(()=>{
-        axios.get(APIUrl)
-            .then(response => response.data)
-            .then(data => {
-                setNotes({
-                    "notes": data.data
-                })
-            })
-            .catch(error => console.error("Erro -> " + error))
-    }, [])
+    const [separetedNotes, setSeparatedNotes] = useState({"userNotes": [], "anotherNotes": []})
 
     function isAuthor(noteAuthor) {
         if(noteAuthor === user.name) {
@@ -34,6 +24,36 @@ export default function Home() {
             return false
         }
     }
+
+    function checkIfIsAuthor() {
+        let userNotes = []
+        let anotherNotes = []
+
+        notes.notes.map((note)=>{
+            if(note.author === user.name) {
+                userNotes.push(note)
+            } else {
+                anotherNotes.push(note)
+            }
+        })
+
+        setSeparatedNotes({
+            "userNotes": userNotes, 
+            "anotherNotes": anotherNotes
+        })
+
+        return(setSeparatedNotes)
+    }
+
+    useEffect(()=>{
+        axios.get(APIUrl)
+            .then(response => response.data)
+            .then(data => setNotes({"notes": data.data}))
+            .then(()=> checkIfIsAuthor())
+            .then(e => console.log(separetedNotes))
+            .catch(error => console.error("Erro -> " + error))
+    }, [])
+    
 
     return (
         <>
