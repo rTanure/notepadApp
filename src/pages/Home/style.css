@@ -1,0 +1,11 @@
+.notes_container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: 0 auto;
+}
+
+section {
+    min-height: calc(100vh - 160px);
+}
