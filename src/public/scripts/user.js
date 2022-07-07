@@ -1,12 +1,14 @@
 class User {
-    constructor(name) {
-        this.name = undefined
+    constructor() {
+        this.name = sessionStorage.getItem('username')
     }
 
-    changeName(newName) {
+    changeUsername(newName) {
         this.name = newName
+        sessionStorage.setItem("username", newName)
+        document.location.reload()
     }
 }
 
 const user = new User()
-export default {user}
+export default user

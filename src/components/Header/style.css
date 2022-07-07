@@ -8,6 +8,10 @@ header{
     padding: 0 20px;
 }
 
+header h1 {
+    color: white;
+}
+
 header .menu {
     display: flex;
     gap: 20px;
