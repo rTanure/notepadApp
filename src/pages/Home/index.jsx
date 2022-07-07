@@ -4,6 +4,7 @@ import axios from 'axios'
 
 // Scripts
 import user from '../../public/scripts/user'
+import api from '../../public/scripts/api'
 
 // Components
 import Header from '../../components/Header'
@@ -16,7 +17,8 @@ import './style.css'
 
 export default function Home() {
     // URL da api que retornará todas as notas
-    const APIUrl = "https://notepad-app-api.vercel.app/api/notes"
+    const APIUrl = `${api.api.url}/notes`
+
 
     // Estado das notas na página 
     const [notes, setNotes] = useState({ "notes": [] })
@@ -46,7 +48,9 @@ export default function Home() {
                 <div className="notes_container">
                     {
                         notes.notes.map((note)=>{
+                            let haveNotes = false
                             if(isAuthor(note.author)) {
+                                haveNotes = true
                                 return (
                                     <SmallCard  
                                     title= {note.title}
@@ -54,6 +58,7 @@ export default function Home() {
                                     id= {note.id}
                                 />)
                             }
+                            
                         })
                     }
                 </div>
